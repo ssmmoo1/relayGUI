@@ -24,7 +24,7 @@ root.geometry("720x480")
 
 #playImg = tk.PhotoImage(file="play.gif")
 #pauseImg = tk.PhotoImage(file="pause.gif")
-shoeImg = ImageTk.PhotoImage(Image.open("shoe.jpg"))
+#shoeImg = ImageTk.PhotoImage(Image.open("shoe.jpg"))
 
 
 class Relay():
@@ -163,7 +163,7 @@ def allOpenClose():
     d6.startProcess()
 
 
-allControl = tk.Button(master=root, command = allOpenClose(), bd=10)
+allControl = tk.Button(master=root, command = allOpenClose, bd=10)
 allControl.grid(row= 3, column =0, columnspan= 4, ipadx=340, ipady=25)
 
 
