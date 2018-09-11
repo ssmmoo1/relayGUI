@@ -16,6 +16,7 @@ pins = {1: 7, 2: 11, 3: 12, 4: 13, 5: 15, 6: 16, 7: 18, 8: 22, 9: 29, 10: 31, 11
 
 root = tk.Tk()
 root.title("Controller")
+root.config(background="lightblue2")
 
 #root.attributes("-fullscreen", True)  Uncomment when turning in program
 #root.bind('<Escape>',quit)
@@ -24,8 +25,12 @@ root.geometry("800x480")
 
 #playImg = tk.PhotoImage(file="play.gif")
 #pauseImg = tk.PhotoImage(file="pause.gif")
-shoeImg = ImageTk.PhotoImage(Image.open("shoes.png"))
-
+shoeImg = ImageTk.PhotoImage(Image.open("allshoes.png"))
+shirtImg = ImageTk.PhotoImage(Image.open("shirt.png"))
+shortsImg = ImageTk.PhotoImage(Image.open("shorts.png"))
+skirtImg = ImageTk.PhotoImage(Image.open("skirt.png"))
+blouseImg = ImageTk.PhotoImage(Image.open("blouse.jpg"))
+socksImg = ImageTk.PhotoImage(Image.open("allSocks.png"))
 
 class Relay():
 
@@ -48,7 +53,7 @@ class Relay():
         #self.label = tk.Label(master=root, text=self.name)
         #self.label.grid(row=xPos - 1, column=yPos)
 
-        self.button = tk.Button(master=root, command=self.startProcess, bd=10, image = shoeImg)
+        self.button = tk.Button(master=root, command=self.startProcess, bd=10, bg = "LightYellow4", fg="cyan3")
         self.button.grid(row=xPos, column=yPos,rowspan=span,padx=10, pady= 10)
         self.button.grid_propagate(0)
 
@@ -164,8 +169,9 @@ d2 = Relay(3, 0, 1, "Garmet Drawer", long = True)
 #d1.button.grid(row=d1.x, column=d2.x,rowspan=2, ipadx=xpad, ipady=ypad,  padx=8, pady= 8, sticky= "WENS")
 #d2.button.grid(row=d2.x, column=d2.y,rowspan=2, ipadx=xpad, ipady=ypad,  padx=8, pady= 8, sticky= "WENS")
 
-d1.button.config(height=350, width= 150)
-d2.button.config(height=350, width=150)
+h1 = 350
+d1.button.config(height=h1, width= 100, image = shoeImg)
+d2.button.config(height=h1, width=150, image = socksImg)
 
 
 
@@ -175,10 +181,14 @@ d4 = Relay(7, 1, 2, "Keith's lower closet")
 d5 = Relay(9, 0, 3, "Erika's upper closet")
 d6 = Relay(11,1, 3, "Erika's lower closet")
 
-d3.button.config(height=175, width=150)
-d4.button.config(height=175, width=150)
-d5.button.config(height=175, width=150)
-d6.button.config(height=175, width=150)
+
+
+h3= 150
+w3 = 185
+d3.button.config(height=h3, width=w3, image=shirtImg)
+d4.button.config(height=h3, width=w3, image = shortsImg)
+d5.button.config(height=h3, width=w3, image = blouseImg)
+d6.button.config(height=h3, width=w3, image = skirtImg)
 #d3.button.grid(row=d3.x, column=d3.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
 #d4.button.grid(row=d4.x, column=d4.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
 #d5.button.grid(row=d5.x, column=d5.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
@@ -193,8 +203,8 @@ def allClose():
     d6.startReset()
 
 
-allControl = tk.Button(master=root, command = allClose, bd=10)
-allControl.grid(row= 3, column =0, columnspan= 4, ipadx=340, ipady=25)
+allControl = tk.Button(master=root, command = allClose, bd=10, height = 1, width = 53, text="Close All", font="Helvetica, 18")
+allControl.grid(row= 3, column =0, columnspan= 4)
 
 
 
