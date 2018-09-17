@@ -3,8 +3,45 @@ import tkinter as tk
 from time import sleep
 from threading import Thread
 from PIL import ImageTk, Image
-
 #import RPi.GPIO as GPIO
+
+#################################################################################
+backgroundColor = "lightblue2"
+buttonColor = "slategray"
+textColor = "black"
+
+fontSize = "22"
+
+button1Text = "Shoe Rack"
+button2Text = "Garmet Drawer"
+
+button3Text = "Keith's Upper Closet"
+button4Text = "Keith's Lower Closet"
+
+button5Text = "Erika's Upper Closet"
+button6Text = "Erika's Lower Closet"
+
+button1ImageFile = "allShoes.png"
+button2ImageFile = "dress.jpg"
+
+button3ImageFile = "shirt.png"
+button4ImageFile = "shorts.png"
+
+button5ImageFile = "blouse.jpg"
+button6ImageFile = "skirt.png"
+
+actuatorActiveTime = 6
+#################################################################################
+
+
+
+
+
+
+
+
+
+
 
 pins = {1: 7, 2: 11, 3: 12, 4: 13, 5: 15, 6: 16, 7: 18, 8: 22, 9: 29, 10: 31, 11: 32, 12: 33}
 
@@ -16,51 +53,49 @@ pins = {1: 7, 2: 11, 3: 12, 4: 13, 5: 15, 6: 16, 7: 18, 8: 22, 9: 29, 10: 31, 11
 
 root = tk.Tk()
 root.title("Controller")
-root.config(background="lightblue2")
+root.config(background=backgroundColor)
 
 #root.attributes("-fullscreen", True)  Uncomment when turning in program
 #root.bind('<Escape>',quit)
 root.geometry("800x480")
 
 
-#playImg = tk.PhotoImage(file="play.gif")
-#pauseImg = tk.PhotoImage(file="pause.gif")
-shoeImg = ImageTk.PhotoImage(Image.open("allshoes.png"))
-shirtImg = ImageTk.PhotoImage(Image.open("shirt.png"))
-shortsImg = ImageTk.PhotoImage(Image.open("shorts.png"))
-skirtImg = ImageTk.PhotoImage(Image.open("skirt.png"))
-blouseImg = ImageTk.PhotoImage(Image.open("blouse.jpg"))
-socksImg = ImageTk.PhotoImage(Image.open("allSocks.png"))
+button1Img = ImageTk.PhotoImage(Image.open("images/" + button1ImageFile))
+button2Img = ImageTk.PhotoImage(Image.open("images/" +button2ImageFile))
+button3Img = ImageTk.PhotoImage(Image.open("images/" +button3ImageFile))
+button4Img = ImageTk.PhotoImage(Image.open("images/" +button4ImageFile))
+button5Img = ImageTk.PhotoImage(Image.open("images/" +button5ImageFile))
+button6Img = ImageTk.PhotoImage(Image.open("images/" +button6ImageFile))
+
+
 
 class Relay():
 
-    def __init__(self, relayNumber, xPos, yPos, label, long=False):  # Relay number is 1-16 used for http request
+    def __init__(self, relayNumber, xPos, yPos, label, long=False):
         global root
         global pins
+
+        words= label.split()
+        self.name = "\n".join(words)
+
+
+
         self.id = relayNumber
         self.x = xPos
         self.y = yPos
-        self.name = label
         self.state = False
 
         self.pin1 = pins[relayNumber]
         self.pin2 = pins[relayNumber + 1]
 
-        span = 1
+        self.span = 1
         if(long == True):
-            span=2
+            self.span=2
 
-        #self.label = tk.Label(master=root, text=self.name)
-        #self.label.grid(row=xPos - 1, column=yPos)
-
-        self.button = tk.Button(master=root, command=self.startProcess, bd=10, bg = "LightYellow4", fg="cyan3")
-        self.button.grid(row=xPos, column=yPos,rowspan=span,padx=10, pady= 10)
+        self.button = tk.Button(master=root, command=self.startProcess, bd=10, bg = buttonColor, text = self.name, font="Helvetica, " + fontSize , compound = tk.CENTER, activebackground=buttonColor, fg=textColor)
+        self.button.grid(row=xPos, column=yPos,rowspan=self.span,padx=10, pady= 10)
         self.button.grid_propagate(0)
 
-        #self.txt1 = tk.Label(text = self.name)
-        #self.txt1.grid(row=xPos, column=yPos, sticky="S")
-
-        #self.txt2 = ""
 
         self.inProgress = False
         self.stop = False
@@ -91,11 +126,9 @@ class Relay():
     def startProcess(self):
         if (self.inProgress == False):
             if (self.state == False):
-                #self.button.config(image=pauseImg)
                 print("Opening stage I")
 
             else:
-                #self.button.config(image=playImg)
                 print("Closing stage I")
 
             ocThread = Thread(target=self.openClose)
@@ -118,11 +151,11 @@ class Relay():
             #GPIO.output(self.pin1, GPIO.LOW)
             print("Pin " + str(self.pin1) + " ouput low")
 
-            print("Waiting ten seconds")
+            print("Waiting " + str(actuatorActiveTime) + " seconds")
 
             sleepCounter = 0
 
-            while (sleepCounter < 600 and self.stop == False):
+            while (sleepCounter < (actuatorActiveTime * 100) and self.stop == False):
                 sleep(.01)
                 sleepCounter += 1
 
@@ -140,11 +173,11 @@ class Relay():
             #GPIO.output(self.pin2, GPIO.LOW)
             print("Pin " + str(self.pin2) + " ouput low")
 
-            print("Waiting ten seconds")
+            print("Waiting " + str(actuatorActiveTime) + " seconds")
 
             sleepCounter = 0
 
-            while (sleepCounter < 600 and self.stop == False):
+            while (sleepCounter < (actuatorActiveTime * 100) and self.stop == False):
                 sleep(.01)
                 sleepCounter += 1
 
@@ -162,37 +195,30 @@ ypad = 63
 xpad = 68
 
 
-d1 = Relay(1, 0, 0, "Shoe Rack", long=True)
-d2 = Relay(3, 0, 1, "Garmet Drawer", long = True)
+d1 = Relay(1, 0, 0, button1Text, long=True)
+d2 = Relay(3, 0, 1, button2Text, long = True)
 
-
-#d1.button.grid(row=d1.x, column=d2.x,rowspan=2, ipadx=xpad, ipady=ypad,  padx=8, pady= 8, sticky= "WENS")
-#d2.button.grid(row=d2.x, column=d2.y,rowspan=2, ipadx=xpad, ipady=ypad,  padx=8, pady= 8, sticky= "WENS")
-
-h1 = 350
-d1.button.config(height=h1, width= 100, image = shoeImg)
-d2.button.config(height=h1, width=150, image = socksImg)
+longHeight = 350
+d1.button.config(height=longHeight, width= 100, image = button1Img, compound = tk.CENTER)
+d2.button.config(height=longHeight, width=150, image = button2Img)
 
 
 
 
-d3 = Relay(5, 0, 2, "Keith's upper closet")
-d4 = Relay(7, 1, 2, "Keith's lower closet")
-d5 = Relay(9, 0, 3, "Erika's upper closet")
-d6 = Relay(11,1, 3, "Erika's lower closet")
+d3 = Relay(5, 0, 2, button3Text)
+d4 = Relay(7, 1, 2, button4Text)
+d5 = Relay(9, 0, 3, button5Text)
+d6 = Relay(11,1, 3, button6Text)
 
 
 
-h3= 150
-w3 = 185
-d3.button.config(height=h3, width=w3, image=shirtImg)
-d4.button.config(height=h3, width=w3, image = shortsImg)
-d5.button.config(height=h3, width=w3, image = blouseImg)
-d6.button.config(height=h3, width=w3, image = skirtImg)
-#d3.button.grid(row=d3.x, column=d3.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
-#d4.button.grid(row=d4.x, column=d4.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
-#d5.button.grid(row=d5.x, column=d5.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
-#d6.button.grid(row=d6.x, column=d6.y,rowspan=1, ipadx=xpad, ipady=ypad, padx=10, pady= 10, sticky= "WENS")
+smallHeight= 150
+smallWidth = 185
+d3.button.config(height=smallHeight, width=smallWidth, image=button3Img)
+d4.button.config(height=smallHeight, width=smallWidth, image = button4Img)
+d5.button.config(height=smallHeight, width=smallWidth, image = button5Img)
+d6.button.config(height=smallHeight, width=smallWidth, image = button6Img)
+
 
 def allClose():
     d1.startReset()
@@ -203,7 +229,7 @@ def allClose():
     d6.startReset()
 
 
-allControl = tk.Button(master=root, command = allClose, bd=10, height = 1, width = 53, text="Close All", font="Helvetica, 18")
+allControl = tk.Button(master=root, command = allClose, bd=10, height = 1, width = 53, text="Close All", font="Helvetica, 18", bg=buttonColor, activebackground=buttonColor, fg=textColor)
 allControl.grid(row= 3, column =0, columnspan= 4)
 
 
