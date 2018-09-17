@@ -1,0 +1,103 @@
+
+##########################
+The following are first time setup instructions
+
+Setting up the SD Card
+	Put the micro SD card you will be using for the PI into a computer with an SD card slot
+	Download the program Etcher from this link https://etcher.io/
+	Run the installer and and then run Etcher
+	Etcher will ask you to choose an image file
+	Download Raspbian(The operating system for the raspberry pi) from this link https://www.raspberrypi.org/downloads/raspbian/ and download the Raspbian Stretch With Desktop ZIP
+	Once it is done downloading, choose the raspbian zip file in etcher
+	Choose the SD card to write to in etcher
+	Click flash and wait until it is complete this will take several minutes
+
+Setting up the Pi
+	Put the SD card into the pi connect a mouse, keyboard, monitor and power cable
+	Follow the initial set up and connect it to a wifi network or to lan with an ethernet cable
+	It will ask if you want to check for updates you can skip this
+	Put all the files from the zip file onto the desktop
+
+Updating Python to work with the alexa program and the GUI program
+    open a terminal and type
+
+    cd Desktop
+    chmod +x upgrade.bat
+
+    Close the terminal and all other progams
+    Double click upgrade.bat and choose execute in terminal
+
+    lots of stuff will happen and within a few seconds it will ask if you want to continue
+    type       Y     then press enter
+    This will happen one or two more times. just press Y and enter
+    The rest will take about 15 minutes to complete.
+    When it is done the terminal will close.
+
+################################################
+Running the programs
+
+To run the Alexa program double click startAlexa.bat and choose execute in terminal
+To run the GUI program double click the controller.py program and choose execute
+
+To close the GUI program press the escape key on the keyboard
+To stop the alexa program close the terminal it is running in
+################################################
+Configuring the controller.py program
+
+Double click the controller.py file and press open
+The program will open in a code editor
+This will allow you to edit the program just like a text file
+The options you can change is the section in code that is designated between hashtags
+
+    ###############
+    exampleoption = "example"
+    ###############
+
+The first set of options are colors
+    You can find a list of colors you can choose from here https://wiki.tcl.tk/37701
+    If you want to change a color then delete the words between the quotes and replace it with the color you want.
+    Keep the capitalization exactly as it shows on the website
+    Don't change anything outside of the quotes
+
+Next is the font size
+    You can change the number between the quotes if you want a larger or smaller font
+
+    The next several options are for the text on the buttons
+    You can replace the words in the quotes with the text that you want to appear on the button
+    The buttons are labeled 1-6
+    1 being the left most button and 6 being the bottom left button
+
+The next several options are for the image that you want on the button
+    To change the image on the button the image must be the right correct size and also be in the "images" folder for the program to find it
+    Change the name between the quotes to the exact name of the picture you want in the images folder. Make sure you include the file extension
+
+    The image sizes must be the following
+    buttonN Image: width x height
+
+    button1 Image: 100x300
+    button2 Image: 150x300
+    button3,4,5,6 Image: 185x150
+
+The final option is the active time for the actuator
+    This value is NOT in quotes
+    This value is the time in seconds
+    Delete the number and you can replace it with any whole number
+    Do not use a decimal point
+    This will be the time the relay is open for when a button is pressed in seconds
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
